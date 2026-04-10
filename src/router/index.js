@@ -16,6 +16,11 @@ const routes = [
     component: LoginView
   },
   {
+    path: '/business',
+    name: 'BusinessUser',
+    component: () => import('../views/BusinessUser.vue') // Lazy load the business user view
+  },
+  {
     path: '/register',
     name: 'Register',
     component: RegisterView
