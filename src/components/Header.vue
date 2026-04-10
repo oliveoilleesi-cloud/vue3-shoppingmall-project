@@ -39,7 +39,7 @@
               <span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
             </button>
             <button class="p-2 hover:bg-primary/10 rounded-lg transition-colors">
-              <span class="material-symbols-outlined">person</span>
+              <span class="material-symbols-outlined">login</span>
             </button>
           </div>
         </div>

@@ -89,6 +89,7 @@
               :key="product.id"
               :product="product"
               :isDraggable="true"
+              :onClick="handleProductClick"
             />
           </div>
           <!-- Pagination -->
@@ -175,9 +176,14 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useProductStore } from '../stores/productStore'
 import ProductCard from '../components/ProductCard.vue'
 import Header from '../components/Header.vue'
 import DragDropZone from '../components/DragDropZone.vue'
+
+const router = useRouter()
+const productStore = useProductStore()
 
 const socialIcons = ['public', 'share']
 const shopLinks = ['All Products', 'New Arrivals', 'Best Sellers', 'Gift Cards']
@@ -212,7 +218,7 @@ const products = ref([
     price: 299.00,
     rating: 4.9,
     reviews: 124,
-    image: '/images/product1.jpg',
+    image: 'https://placehold.co/400',
     category: 'Tech Accessories'
   },
   {
@@ -221,7 +227,7 @@ const products = ref([
     price: 350.00,
     rating: 4.8,
     reviews: 89,
-    image: '/images/product2.jpg',
+    image: 'https://placehold.co/400',
     category: 'Tech Accessories'
   },
   {
@@ -230,7 +236,7 @@ const products = ref([
     price: 65.00,
     rating: 5.0,
     reviews: 42,
-    image: '/images/product3.jpg',
+    image: 'https://placehold.co/400',
     category: 'Home Essentials',
     isNew: true
   },
@@ -240,7 +246,7 @@ const products = ref([
     price: 85.00,
     rating: 4.7,
     reviews: 215,
-    image: '/images/product4.jpg',
+    image: 'https://placehold.co/400',
     category: 'Personal Care'
   },
   {
@@ -249,7 +255,7 @@ const products = ref([
     price: 120.00,
     rating: 4.9,
     reviews: 56,
-    image: '/images/product5.jpg',
+    image: 'https://placehold.co/400',
     category: 'Tech Accessories'
   },
   {
@@ -258,7 +264,7 @@ const products = ref([
     price: 450.00,
     rating: 4.8,
     reviews: 102,
-    image: '/images/product6.jpg',
+    image: 'https://placehold.co/400',
     category: 'Travel Gear'
   }
 ])
@@ -294,6 +300,15 @@ const handleDrop = async (items) => {
   }
 
   console.log('products:', products.value)
+}
+
+const handleProductClick = (product) => {
+  console.log('Product clicked:', product)
+  
+  productStore.setProduct(product)
+  router.push({
+    path:  `/product/${product.id}`
+  })
 }
 
 const selectCategory = (category) => {

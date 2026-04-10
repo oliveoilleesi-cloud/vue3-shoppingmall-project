@@ -2,6 +2,7 @@
   <div 
     class="group cursor-pointer"
     @dragstart="handleDragStart"
+    @click="handleClick"
     draggable="true"
   >
     <div draggable="true" @dragstart="handleDragStart"
@@ -13,8 +14,7 @@
       <!-- New Badge -->
       <div v-if="product.isNew" class="absolute top-3 right-3 z-10">
         <div class="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-          <span class="material-symbols-outlined text-sm">new_releases</span>
-          <span>New</span>
+          <span class="material-symbols-outlined text-sm">new</span>
         </div>
       </div>
 
@@ -53,6 +53,11 @@ const props = defineProps({
   isDraggable: {
     type: Boolean,
     default: false
+  },
+  onClick: {
+    type: Function,
+    required: false,
+    default: null
   }
 })
 
@@ -74,6 +79,14 @@ const handleDragStart = (event) => {
   // 드래그 이미지 커스터마이징 (선택사항)
   event.dataTransfer.setDragImage(event.currentTarget, 0, 0)
 }
+
+const handleClick = () => {
+  if (props.onClick) {
+    props.onClick(props.product)
+    return
+  }
+}
+
 </script>
 
 <style scoped>
