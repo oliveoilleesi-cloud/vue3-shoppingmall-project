@@ -1,10 +1,21 @@
 <template>
   <!-- URL에 따라 각 컴포넌트가 렌더링되는 영역 -->
+    <Header v-if="!isFullApp"></Header>
     <router-view />
+    <Footer v-if="!isFullApp"></Footer>
 </template>
 
 <script setup>
-// 필요한 로직이 있다면 여기에 작성
+import { computed } from 'vue'
+import { useRouter} from 'vue-router'
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
+
+const router = useRouter()
+
+const isFullApp = computed(() => {
+  return router.currentRoute.value.meta?.isFullApp || false
+})
 </script>
 
 <style>

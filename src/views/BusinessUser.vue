@@ -1,5 +1,13 @@
 <script setup>
 import { ref, reactive } from 'vue'
+import Modal from '@/components/Modal.vue'
+
+const showModal = ref(false)
+const modalData = ref({
+  title: '승인 요청이 완료되었습니다.',
+  message: '\n * 사업자 확인을 위해 연락 드릴 수 있습니다.\n승인 처리는 영업일 기준 2~3 일이 소요될 수 있으며, 승인 결과는 가입 시 인증한 메일 주소로 발송됩니다.',
+  buttonText: '확인'
+})
 
 const form = reactive({
   businessRegistrationNumber: '',
@@ -7,9 +15,7 @@ const form = reactive({
   representativeName: '',
   foundationDate: '',
   businessAddress: '',
-  businessLicenseImage: null,
-  terms: false,
-  verified: false
+  businessLicenseImage: null
 })
 
 const licenseImagePreview = ref(null)
@@ -27,10 +33,6 @@ const handleFileChange = (event) => {
 }
 
 const handleSubmit = () => {
-  if (!form.terms || !form.verified) {
-    alert('모든 약관에 동의하고 확인을 해주세요.')
-    return
-  }
 
   const formData = new FormData()
   formData.append('businessRegistrationNumber', form.businessRegistrationNumber)
@@ -44,13 +46,19 @@ const handleSubmit = () => {
 
   console.log('Form Data:', Object.fromEntries(formData))
   // TODO: API 호출
-  alert('승인 요청이 완료되었습니다.')
+  showModal.value = true
+}
+
+const handleModalClose = (data) => {
+  console.log('Modal closed with data:', data)
+  showModal.value = false
 }
 </script>
 
 <template>
   <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800">
     <div class="container mx-auto px-4 py-8 max-w-4xl">
+      <!-- Title -->
       <div class="mb-8 text-center">
         <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-2">
           사업자 등록 신청
@@ -60,7 +68,6 @@ const handleSubmit = () => {
         </p>
       </div>
 
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
         <form @submit.prevent="handleSubmit" class="space-y-8">
           <!-- 사업자 정보 -->
           <div class="bg-slate-50 dark:bg-gray-700 p-6 rounded-xl">
@@ -69,7 +76,7 @@ const handleSubmit = () => {
               사업자 정보
             </h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 gap-6">
               <!-- 사업자등록번호 -->
               <div>
                 <label class="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">
@@ -138,16 +145,27 @@ const handleSubmit = () => {
                 />
               </div>
             </div>
-          </div>
 
-          <!-- 사업장 정보 -->
-          <div class="bg-slate-50 dark:bg-gray-700 p-6 rounded-xl">
-            <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary">location_on</span>
-              사업장 정보
-            </h3>
-
-            <div class="mb-4">
+            &nbsp;
+            <!--사업장 주소-->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">
+                <span class="inline-flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary">location_on</span>
+                  사업장 주소 *
+                </span>
+              </label>
+              <input
+                type="text"
+                v-model="form.businessAddress"
+                class="w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-white dark:bg-gray-800 text-slate-900 dark:text-white"
+                placeholder="사업장 주소를 입력하세요"
+                required
+              />
+            </div>     
+            &nbsp;
+            <!-- 사업자등록증 사본 -->
+            <div>
               <label class="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">
                 <span class="inline-flex items-center gap-2">
                   <span class="material-symbols-outlined text-primary">location_city</span>
@@ -169,39 +187,7 @@ const handleSubmit = () => {
             <!-- 이미지 미리보기 -->
             <div v-if="licenseImagePreview" class="mt-4">
               <img :src="licenseImagePreview" alt="사업자등록증 사본 미리보기" class="max-w-full h-auto rounded-lg border-2 border-slate-200 dark:border-gray-600" />
-            </div>
-          </div>
-
-          <!-- 약관 동의 -->
-          <div class="bg-slate-50 dark:bg-gray-700 p-6 rounded-xl">
-            <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary">gavel</span>
-              약관 동의
-            </h3>
-
-            <div class="space-y-3">
-              <label class="flex items-start gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  v-model="form.terms"
-                  class="w-5 h-5 mt-0.5 text-primary border-slate-300 rounded focus:ring-primary"
-                />
-                <span class="text-sm text-slate-600 dark:text-gray-400">
-                  <a href="#" class="text-primary hover:underline">이용약관</a> 에 동의합니다
-                </span>
-              </label>
-
-              <label class="flex items-start gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  v-model="form.verified"
-                  class="w-5 h-5 mt-0.5 text-primary border-slate-300 rounded focus:ring-primary"
-                />
-                <span class="text-sm text-slate-600 dark:text-gray-400">
-                  입력한 정보의的真实性을 확인합니다
-                </span>
-              </label>
-            </div>
+            </div>        
           </div>
 
           <!-- 제출 버튼 -->
@@ -214,8 +200,9 @@ const handleSubmit = () => {
             </button>
           </div>
         </form>
-      </div>
     </div>
+
+    <Modal v-if="showModal" :title="modalData.title" :message="modalData.message" :button-text="modalData.buttonText" @close="handleModalClose" />
   </div>
 </template>
 

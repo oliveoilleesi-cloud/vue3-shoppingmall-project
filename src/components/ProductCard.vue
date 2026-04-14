@@ -6,7 +6,7 @@
     draggable="true"
   >
     <div draggable="true" @dragstart="handleDragStart"
-      class="relative aspect-square mb-4 overflow-hidden rounded-xl bg-slate-100">
+      class="relative aspect-square mb-4 overflow-hidden rounded-xl bg-slate-100 margin-10">
       <!-- Product Image -->
       <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
         :style="{ backgroundImage: `url('${product.image}')` }"></div>

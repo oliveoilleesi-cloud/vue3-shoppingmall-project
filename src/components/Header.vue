@@ -5,8 +5,8 @@
         <div class="flex items-center justify-between h-20">
           <div class="flex items-center gap-12">
             <div class="flex items-center gap-2 text-primary">
-              <span class="material-symbols-outlined text-4xl">diamond</span>
-              <h2 class="text-2xl font-extrabold tracking-tighter">LUXE</h2>
+              <span class="material-symbols-outlined text-4xl">App</span>
+              <h2 class="text-2xl font-extrabold tracking-tighter">MALL</h2>
             </div>
             <nav class="hidden md:flex items-center gap-8">
                 <router-link
@@ -38,7 +38,7 @@
               <span class="material-symbols-outlined">shopping_bag</span>
               <span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
             </button>
-            <button class="p-2 hover:bg-primary/10 rounded-lg transition-colors">
+            <button class="p-2 hover:bg-primary/10 rounded-lg transition-colors" onabort="" :onclick="handleLogin">
               <span class="material-symbols-outlined">login</span>
             </button>
           </div>
@@ -47,18 +47,21 @@
     </div>
 </template>
 <script setup>
+import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+const router = useRouter()
 const searchQuery = ref('')
 
 const navItems = [
-  { name: 'Home', path: '/' },
-  { name: 'Shop', path: '/shop' },
-  { name: 'Collections', path: '/collections' },
-  { name: 'About', path: '/about' }
+  { name: 'Home', path: '/' }
 ]
 
 const isActive = (path) => {
   return window.location.pathname === path
+}
+
+const handleLogin = () => {
+  router.push('/login')
 }
 </script>
 

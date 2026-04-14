@@ -1,5 +1,4 @@
 <template>
-  <div  class="max-w-4xl mx-auto p-6">
     <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
       <div class="flex flex-col md:flex-row">
         <!-- Product Image -->
@@ -99,7 +98,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -167,4 +165,5 @@ const placeOrder = () => {
 button:hover span.material-symbols-outlined {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
 }
+
 </style>
