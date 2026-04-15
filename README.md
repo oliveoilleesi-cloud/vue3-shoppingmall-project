@@ -36,7 +36,9 @@ npm run dev
 ```sh
 npm run build
 ```
+### deploy
 
+[design link](https://vue3-shoppingmall-project.vercel.app/)
 
 ### references
 

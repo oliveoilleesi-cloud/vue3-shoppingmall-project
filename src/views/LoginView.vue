@@ -78,9 +78,22 @@
         </div>
 
         <!-- Submit Button -->
+        <button type="button" :disabled="isLoading" :onclick="handlefailedLogin" 
+          class="w-full bg-primary hover:bg-primary-dark disabled:bg-slate-300 text-white font-bold py-3 px-4 rounded-xl transition-all transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed shadow-lg">
+          <span v-if="!isLoading">Sign In(사업자인증 X)</span>
+          <span v-else class="flex items-center justify-center gap-2">
+            <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
+            Signing in...
+          </span>
+        </button>
+        &NonBreakingSpace;
         <button type="submit" :disabled="isLoading"
           class="w-full bg-primary hover:bg-primary-dark disabled:bg-slate-300 text-white font-bold py-3 px-4 rounded-xl transition-all transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed shadow-lg">
-          <span v-if="!isLoading">Sign In</span>
+          <span v-if="!isLoading">Sign In(사업자인증 O)</span>
           <span v-else class="flex items-center justify-center gap-2">
             <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
@@ -167,6 +180,26 @@ const generateCaptcha = () => {
 }
 
 const handleLogin = async () => {
+  if (captchaInput.value.toUpperCase() !== captchaCode.value) {
+    alert('Captcha verification failed. Please try again.')
+    generateCaptcha()
+    captchaInput.value = ''
+    return
+  }
+  showModal.value = true
+
+  // isLoading.value = true
+
+  // // Mock login logic
+  // setTimeout(() => {
+  //   console.log('Login:', { email: email.value, password: password.value, rememberMe: rememberMe.value })
+  //   alert('Login successful!')
+  //   router.push('/shop')
+  //   isLoading.value = false
+  // }, 1500)
+}
+
+const handlefailedLogin = async () => {
   if (captchaInput.value.toUpperCase() !== captchaCode.value) {
     alert('Captcha verification failed. Please try again.')
     generateCaptcha()
