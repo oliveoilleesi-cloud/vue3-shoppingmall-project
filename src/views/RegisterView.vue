@@ -5,14 +5,13 @@
       <div class="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4">
         <span class="text-2xl">📋</span>
       </div>
-      <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">B2B Login</h2>
-      <p class="text-slate-600 dark:text-gray-400">Join our B2B Business Portal</p>
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">회원가입</h2>
     </div>
 
     <!-- Form -->
-    <div class="bg-slate-50 dark:bg-gray-700 p-6 rounded-xl">
+    <div class=" p-6 rounded-xl">
       <div class="mx-auto w-fit">
-        <form @submit.prevent="handleRegister">
+        <form class="text-left" @submit.prevent="handleRegister">
           <div class="mb-6">
             <label for="user-id" class="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">
               <span class="inline-flex items-center gap-2">
@@ -21,7 +20,7 @@
               </span>
             </label>
             <input id="user-id" type="text" v-model="form.id"
-              class="block w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-slate-50 dark:bg-gray-700 text-slate-900 dark:text-white"
+              class="block w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all  text-slate-900 dark:text-white"
               placeholder="Enter user ID" required minlength="4" />
           </div>
           <!-- Member Info -->
@@ -29,7 +28,7 @@
             <!-- ID & Password -->
             <!-- Email -->
 
-            <div class="mb-6">
+                        <div class="mb-6">
               <label class="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">
                 <span class="inline-flex items-center gap-2">
                   <span class="material-symbols-outlined text-primary">lock</span>
@@ -37,8 +36,20 @@
                 </span>
               </label>
               <input type="password" v-model="form.password"
-                class="w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-white dark:bg-gray-800 text-slate-900 dark:text-white"
+                class="block w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all  text-slate-900 dark:text-white"
                 placeholder="Enter password" required minlength="8" />
+            </div>
+
+            <div class="mb-6">
+              <label class="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">
+                <span class="inline-flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary">lock_reset</span>
+                  Confirm Password *
+                </span>
+              </label>
+              <input type="password" v-model="form.confirmPassword"
+                class="block w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all  text-slate-900 dark:text-white"
+                placeholder="Re-enter password" required minlength="8" />
             </div>
 
             <!-- Name & Phone -->
@@ -50,10 +61,10 @@
                 </span>
               </label>
               <input type="text" v-model="form.name"
-                class="w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-white dark:bg-gray-800 text-slate-900 dark:text-white"
+                class="block w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all  text-slate-900 dark:text-white"
                 placeholder="Enter full name" required />
             </div>
-            <div class="mb-6">
+                        <div class="mb-6">
               <label class="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">
                 <span class="inline-flex items-center gap-2">
                   <span class="material-symbols-outlined text-primary">smartphone</span>
@@ -62,23 +73,47 @@
               </label>
               <div class="flex gap-2">
                 <input type="tel" v-model="form.phone"
-                  class="flex-1 px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-white dark:bg-gray-800 text-slate-900 dark:text-white"
+                  class="flex-1 px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all  text-slate-900 dark:text-white"
                   placeholder="010-1234-5678" required pattern="[0-9-]" />
                 <button type="button" @click="sendPhoneVerification"
-                  :disabled="phoneVerificationSent || phoneVerificationTimer > 0"
-                  class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-slate-300 disabled:to-slate-400 text-white font-semibold rounded-xl transition-all whitespace-nowrap shadow-lg">
+                  :disabled="phoneVerificationTimer > 0"
+                  class="px-6 py-3 bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark disabled:from-slate-300 disabled:to-slate-400 text-white font-semibold rounded-xl transition-all whitespace-nowrap shadow-lg">
                   {{ phoneVerificationTimer > 0 ? `${phoneVerificationTimer}s` : '인증하기' }}
                 </button>
               </div>
               <div v-if="phoneVerificationSent" class="mt-2">
                 <input type="text" v-model="form.phoneVerificationCode"
-                  class="w-full px-4 py-2 border-2 border-slate-200 dark:border-gray-600 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-center"
+                  class="w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-center font-mono"
+                  placeholder="Enter verification code" maxlength="6" />
+              </div>
+            </div>
+
+            <div class="mb-6">
+              <label class="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">
+                <span class="inline-flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary">mail</span>
+                  Email Address *
+                </span>
+              </label>
+              <div class="flex gap-2">
+                <input type="email" v-model="form.email"
+                  class="flex-1 px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all  text-slate-900 dark:text-white"
+                  placeholder="name@example.com" required />
+                <button type="button" @click="sendEmailVerification"
+                  :disabled="emailVerificationTimer > 0"
+                  class="px-6 py-3 bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark disabled:from-slate-300 disabled:to-slate-400 text-white font-semibold rounded-xl transition-all whitespace-nowrap shadow-lg">
+                  {{ emailVerificationTimer > 0 ? `${emailVerificationTimer}s` : '인증하기' }}
+                </button>
+              </div>
+              <div v-if="emailVerificationSent" class="mt-2">
+                <input type="text" v-model="form.emailVerificationCode"
+                  class="w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-center font-mono"
                   placeholder="Enter verification code" maxlength="6" />
               </div>
             </div>
 
             <!-- Terms & Conditions -->
-            <div class="bg-slate-50 dark:bg-gray-700 p-6 rounded-xl">
+            <div class=" p-6 rounded-xl">
               <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary">gavel</span>
                 Terms & Conditions
@@ -117,7 +152,7 @@
               Go to Login
             </button>
             <button type="submit" :disabled="isLoading || !form.terms"
-              class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-slate-300 disabled:to-slate-400 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed shadow-lg">
+              class="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark disabled:from-slate-300 disabled:to-slate-400 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed shadow-lg">
               <span v-if="!isLoading">Create Account</span>
               <span v-else class="flex items-center justify-center gap-2">
                 <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
@@ -147,6 +182,7 @@ const store = useProductStore()
 const form = ref({
   id: '',
   password: '',
+  confirmPassword: '',
   name: '',
   phone: '',
   phoneVerificationCode: '',
@@ -214,9 +250,13 @@ const sendEmailVerification = () => {
 }
 
 const handleRegister = () => {
-  // Validate passwords match
+  // Validate password
   if (form.value.password.length < 8) {
     alert('Password must be at least 8 characters')
+    return
+  }
+  if (form.value.password !== form.value.confirmPassword) {
+    alert('Passwords do not match')
     return
   }
 
@@ -227,14 +267,23 @@ const handleRegister = () => {
   }
 
   // Validate verification codes (mock)
-  if (!form.value.phoneVerificationCode) {
-    alert('Please enter phone verification code')
-    return
-  }
-  if (!form.value.emailVerificationCode) {
-    alert('Please enter email verification code')
-    return
-  }
+  // if (!phoneVerificationSent.value || !form.value.phoneVerificationCode) {
+  //   alert('Please complete phone verification')
+  //   return
+  // }
+  // if (form.value.phoneVerificationCode !== phoneVerificationCode.value) {
+  //   alert('Invalid phone verification code')
+  //   return
+  // }
+
+  // if (!emailVerificationSent.value || !form.value.emailVerificationCode) {
+  //   alert('Please complete email verification')
+  //   return
+  // }
+  // if (form.value.emailVerificationCode !== emailVerificationCode.value) {
+  //   alert('Invalid email verification code')
+  //   return
+  // }
 
   isLoading.value = true
 

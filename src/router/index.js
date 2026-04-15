@@ -3,6 +3,8 @@ import ShopView from '../views/ShopView.vue';
 import ProductDetail from '../views/ProductDetail.vue';
 import LoginView from '../views/LoginView.vue';
 import RegisterView from '../views/RegisterView.vue';
+import FavoriteView from '../views/Favorite.vue'
+
 
 const routes = [
   {
@@ -35,13 +37,20 @@ const routes = [
     component: ShopView,
     meta: { requiresAuth: false, isFullApp: false } // 쇼핑 페이지는 인증이 필요하지 않음
   },
-  {
+    {
     path: '/product/:id',
     name: 'ProductDetail',
     component: ProductDetail,
     meta: { requiresAuth: false, isFullApp: false } // 상품 상세 페이지는 인증이 필요하지 않음
+  },
+  {
+    path: '/favorite',
+    name: 'Favorite',
+    component: FavoriteView,
+    meta: { requiresAuth: false, isFullApp: false }
   }
 ]
+
 
 const router = createRouter({
   history: createWebHistory(),

@@ -4,12 +4,11 @@
     <div class="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4">
       <span class="text-2xl">🔒</span>
     </div>
-    <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">B2B Login</h2>
-    <p class="text-slate-600 dark:text-gray-400">Secure Business Portal</p>
+    <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Login</h2>
   </div>
 
   <!-- Form -->
-  <div class="bg-slate-50 dark:bg-gray-700 p-6 rounded-xl">
+  <div class="p-6 rounded-xl">
     <div class="mx-auto w-fit">
       <form class="text-left" @submit.prevent="handleLogin">
         <!-- user-id -->
@@ -21,7 +20,7 @@
             </span>
           </label>
           <input id="user-id" type="text" v-model="userId"
-            class="block w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-slate-50 dark:bg-gray-700 text-slate-900 dark:text-white"
+            class="block w-full px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-slate-900 dark:text-white"
             placeholder="Enter your User Id" required />
         </div>
 
@@ -35,7 +34,7 @@
           </label>
           <div class="relative">
             <input id="password" :type="showPassword ? 'text' : 'password'" v-model="password"
-              class="block w-full px-4 py-3 pr-12 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-slate-50 dark:bg-gray-700 text-slate-900 dark:text-white"
+              class="block w-full px-4 py-3 pr-12 border-2 border-slate-200 dark:border-gray-600 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-slate-900 dark:text-white"
               placeholder="Enter your password" required />
             <button type="button" @click="showPassword = !showPassword"
               class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-primary">
@@ -59,7 +58,7 @@
             </div>
             <div class="flex-shrink-0">
               <div
-                class="w-32 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center font-mono font-bold text-white text-lg tracking-widest shadow-md cursor-pointer select-none"
+                class="w-32 h-12 bg-primary hover:bg-primary-dark rounded-lg flex items-center justify-center font-mono font-bold text-white text-lg tracking-widest shadow-md cursor-pointer select-none transition-colors"
                 @click="generateCaptcha" title="Click to refresh">
                 {{ captchaCode }}
               </div>
@@ -80,7 +79,7 @@
 
         <!-- Submit Button -->
         <button type="submit" :disabled="isLoading"
-          class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-slate-300 disabled:to-slate-400 text-white font-bold py-3 px-4 rounded-xl transition-all transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed shadow-lg">
+          class="w-full bg-primary hover:bg-primary-dark disabled:bg-slate-300 text-white font-bold py-3 px-4 rounded-xl transition-all transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed shadow-lg">
           <span v-if="!isLoading">Sign In</span>
           <span v-else class="flex items-center justify-center gap-2">
             <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
@@ -107,13 +106,13 @@
       <!-- Social Login -->
       <div class="mt-6 grid grid-cols-2 gap-4">
         <button
-          class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-all">
-          <span class="material-symbols-outlined text-blue-500">work</span>
+          class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl hover:border-secondary hover:bg-secondary/10 dark:hover:bg-gray-700 transition-all">
+          <span class="material-symbols-outlined text-secondary">work</span>
           <span class="text-sm font-medium text-slate-700 dark:text-gray-300">Work Account</span>
         </button>
         <button
-          class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl hover:border-green-500 hover:bg-green-50 dark:hover:bg-gray-700 transition-all">
-          <span class="material-symbols-outlined text-green-500">business</span>
+          class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-slate-200 dark:border-gray-600 rounded-xl hover:border-primary hover:bg-primary/10 dark:hover:bg-gray-700 transition-all">
+          <span class="material-symbols-outlined text-primary">business</span>
           <span class="text-sm font-medium text-slate-700 dark:text-gray-300">Company ID</span>
         </button>
       </div>
@@ -132,7 +131,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import ModalConfirm from '../components/ModalConfirm.vue'
+import ModalConfirm from '../components/modals/ModalConfirm.vue'
 
 const router = useRouter()
 const userId = ref('')

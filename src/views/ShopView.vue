@@ -90,6 +90,7 @@
               :product="product"
               :isDraggable="true"
               :onClick="handleProductClick"
+              @clickFavorite="toggleFavorite"
             />
           </div>
           <!-- Pagination -->
@@ -101,16 +102,15 @@
             >
               {{ loading ? 'Loading...' : 'Load More Products' }}
             </button>
-            <p class="text-sm text-slate-400">
-              Showing {{ displayedProducts.length }} of 48 products
+              <p class="text-sm text-slate-400">
+              Showing {{ filteredProducts.length }} of 48 products
             </p>
           </div>
         </div>
       </div>
     </div>
-    <DragDropZone :items="cartItems" :onDrop="handleDrop" @remove="handleRemove" />
+    <!-- <DragDropZone :items="cartItems" :onDrop="handleDrop" @remove="handleRemove" /> -->
     <!-- <Cart :items="cartItems" @drop="handleDrop" @remove="item => cartItems = cartItems.filter(i => i.id !== item.id)" /> -->
-
     </div>
 
 </template>
@@ -125,16 +125,10 @@ import DragDropZone from '../components/DragDropZone.vue'
 const router = useRouter()
 const productStore = useProductStore()
 
-const socialIcons = ['public', 'share']
-const shopLinks = ['All Products', 'New Arrivals', 'Best Sellers', 'Gift Cards']
-const supportLinks = ['Shipping Info', 'Returns & Exchanges', 'Contact Us', 'FAQ']
-const extraShopLinks = ['All Products', 'New Arrivals', 'Best Sellers', 'Gift Cards']
-
 const activeCategory = ref('All Products')
 const priceRange = ref(1000)
 const sortBy = ref('newest')
 const loading = ref(false)
-const displayedProducts = ref([])
 const cartItems = ref([])
 
 const categories = ref([
@@ -151,69 +145,15 @@ const sortOptions = [
   { label: 'Price: High to Low', value: 'price-desc' }
 ]
 
-const products = ref([
-  {
-    id: 1,
-    name: 'Chronos White Edition',
-    price: 299.00,
-    rating: 4.9,
-    reviews: 124,
-    image: 'https://placehold.co/400',
-    category: 'Tech Accessories'
-  },
-  {
-    id: 2,
-    name: 'Studio Pro Headphones',
-    price: 350.00,
-    rating: 4.8,
-    reviews: 89,
-    image: 'https://placehold.co/400',
-    category: 'Tech Accessories'
-  },
-  {
-    id: 3,
-    name: 'Signature Oud Candle',
-    price: 65.00,
-    rating: 5.0,
-    reviews: 42,
-    image: 'https://placehold.co/400',
-    category: 'Home Essentials',
-    isNew: true
-  },
-  {
-    id: 4,
-    name: 'Titanium Hydra Bottle',
-    price: 85.00,
-    rating: 4.7,
-    reviews: 215,
-    image: 'https://placehold.co/400',
-    category: 'Personal Care'
-  },
-  {
-    id: 5,
-    name: 'Apex Pro Tablet Sleeve',
-    price: 120.00,
-    rating: 4.9,
-    reviews: 56,
-    image: 'https://placehold.co/400',
-    category: 'Tech Accessories'
-  },
-  {
-    id: 6,
-    name: 'Nomad Weekend Bag',
-    price: 450.00,
-    rating: 4.8,
-    reviews: 102,
-    image: 'https://placehold.co/400',
-    category: 'Travel Gear'
-  }
-])
-
 const filteredProducts = computed(() => {
-  let result = [...products.value]
-  if (activeCategory.value !== 'All Products') {
-    result = result.filter(p => p.category === activeCategory.value)
-  }
+  let result = [...productStore.products]
+
+  // 1. 카테고리 필터링
+  result = filteredByCategory.value
+  // 2. 이름 검색 필터링
+  result = filteredByName(result)
+
+  // 3. 가격 범위 필터링
   result = result.filter(p => p.price <= priceRange.value)
   switch (sortBy.value) {
     case 'price-asc':
@@ -228,18 +168,28 @@ const filteredProducts = computed(() => {
   return result
 })
 
+const filteredByCategory = computed(() => {
+
+  console.log('Filtering by category:', activeCategory.value)
+  if (activeCategory.value === 'All Products') return productStore.products
+  return productStore.products.filter(p => p.category === activeCategory.value)
+})
+
+const filteredByName = (products) => {
+  if (!productStore.hasSearchName) return products
+  return products.filter(p => p.name.toLowerCase().includes(productStore.searchName.toLowerCase()))
+}
+
 const handleDrop = async (items) => {
-  console.log('Dropped items:', items)
+  const idsToRemove = new Set(items.map(i => i.id))
+
   for (const item of items) {
     if (!cartItems.value.find(i => i.id === item.id)) {
-      console.log('Cart items:', cartItems.value)
       cartItems.value.push(item)
     }
-    console.log(item.name + ' added to cart')
-    products.value = products.value.filter(p => p.id !== item.id)
   }
 
-  console.log('products:', products.value)
+  productStore.setProducts(productStore.products.filter(p => !idsToRemove.has(p.id)))
 }
 
 const handleProductClick = (product) => {
@@ -262,10 +212,20 @@ const loadMore = async () => {
 }
 
 const handleRemove = (item) => {
-  cartItems.value = cartItems.value.filter(
-    i => i.id !== item.id
-  )
+  cartItems.value = cartItems.value.filter(i => i.id !== item.id)
+  productStore.setProducts([...productStore.products, item])
+}
 
-  products.value.push(item)
+const toggleFavorite = (product) => {
+  // ProductCard에서 넘어온 product 기준으로 store.products에서 찾아 favorite 토글 적용
+  const found = productStore.products.find(p => p.id === product.id)
+  if (!found) return
+
+  found.isFavorite = !found.isFavorite
+
+  // 현재 상세로 선택된 상품이 같은 경우도 동기화
+  if (productStore.product?.id === found.id) {
+    productStore.product.isFavorite = found.isFavorite
+  }
 }
 </script>

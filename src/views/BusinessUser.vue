@@ -1,6 +1,9 @@
 <script setup>
 import { ref, reactive } from 'vue'
-import Modal from '@/components/Modal.vue'
+import Modal from '@/components/modals/Modal.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const showModal = ref(false)
 const modalData = ref({
@@ -52,6 +55,7 @@ const handleSubmit = () => {
 const handleModalClose = (data) => {
   console.log('Modal closed with data:', data)
   showModal.value = false
+  router.push('/') // 홈으로 이동
 }
 </script>
 
@@ -70,7 +74,7 @@ const handleModalClose = (data) => {
 
         <form @submit.prevent="handleSubmit" class="space-y-8">
           <!-- 사업자 정보 -->
-          <div class="bg-slate-50 dark:bg-gray-700 p-6 rounded-xl">
+          <div class="p-6 rounded-xl">
             <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
               <span class="material-symbols-outlined text-primary">business</span>
               사업자 정보

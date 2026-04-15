@@ -11,15 +11,18 @@
             <p class="text-slate-500 text-sm leading-relaxed mb-6">
               Crafting premium lifestyle essentials with a focus on quality, minimalism, and timeless design.
             </p>
-            <div class="flex gap-4">
-              <a
-                v-for="icon in socialIcons"
-                :key="icon"
+                        <div class="flex gap-4">
+              <button
+                v-for="item in socialIcons"
+                :key="item.type"
+                type="button"
                 class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all"
-                href="#"
+                :aria-label="item.label"
+                @click="handleSocialClick(item)"
               >
-                <span class="material-symbols-outlined text-lg">{{ icon }}</span>
-              </a>
+                <!-- KakaoTalk (custom svg) -->
+                 <img :src="item.icon" alt="KakaoTalk" class="w-5 h-5" />
+              </button>
             </div>
           </div>
           <div>
@@ -47,24 +50,42 @@
             </ul>
           </div>
         </div>
-        <div class="border-t border-primary/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400 font-medium">
-          <a
-            v-for="icon in socialIcons"
-            :key="icon"
-            class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all"
-            href="#"
-          >
-            <span class="material-symbols-outlined text-lg">{{ icon }}</span>
-          </a>
-        </div>
       </div>
     </div>    
 </template>
 
 <script setup>
-const socialIcons = ['public', 'share']
+import iconKakao from '@/assets/icons/icon-kakao-talk.png';
+import iconLink from '@/assets/icons/icon-link.png';
+const socialIcons = [
+  { type: 'kakao', icon: iconKakao, label: 'Share to KakaoTalk' },
+  { type: 'copy', icon: iconLink, label: 'Copy link' }
+]
+
+const handleSocialClick = async (item) => {
+  if (item.type === 'copy') {
+    const url = window.location.href
+    try {
+      await navigator.clipboard.writeText(url)
+      alert('Link copied!')
+    } catch (e) {
+      // fallback
+      window.prompt('Copy this link:', url)
+    }
+    return
+  }
+
+  if (item.type === 'kakao') {
+    // KakaoTalk 공유는 Kakao SDK(App Key) 연동이 필요합니다.
+    alert('KakaoTalk 공유는 Kakao SDK 연동 후 사용 가능합니다.')
+    return
+  }
+
+}
+
 const shopLinks = ['All Products', 'New Arrivals', 'Best Sellers', 'Gift Cards']
 const supportLinks = ['Shipping Info', 'Returns & Exchanges', 'Contact Us', 'FAQ']
 const extraShopLinks = ['All Products', 'New Arrivals', 'Best Sellers', 'Gift Cards']
+
 
 </script>

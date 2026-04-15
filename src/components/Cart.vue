@@ -1,7 +1,7 @@
 <template>
   <div
     class="border-2 border-dashed rounded-2xl p-6 min-h-[300px] transition"
-    :class="isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300'"
+    :class="isDragging ? 'border-secondary bg-secondary/10' : 'border-gray-300'"
     @dragover.prevent
     @dragleave="isDragging = false"
     @drop.prevent="onDropEvent"
@@ -16,7 +16,7 @@
       <div
         v-for="item in items"
         :key="item.id"
-        class="p-4 border rounded-xl bg-green-50 shadow-sm flex justify-between"
+        class="p-4 border rounded-xl bg-secondary/5 shadow-sm flex justify-between"
       >
         <div>
           <p class="font-semibold">{{ item.name }}</p>
@@ -24,7 +24,7 @@
         </div>
 
         <button
-          class="px-2 py-1 text-sm bg-red-500 text-white rounded"
+          class="px-2 py-1 text-sm bg-primary hover:bg-primary-dark text-white rounded transition-colors"
           @click="remove(item)"
         >
           제거

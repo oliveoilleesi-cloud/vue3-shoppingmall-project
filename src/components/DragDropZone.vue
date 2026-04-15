@@ -2,7 +2,7 @@
   <div
     ref="dropZoneRef"
     class="fixed bottom-24 left-0 w-full px-6 z-40"
-    :class="isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300'"
+    :class="isDragging ? 'border-secondary bg-secondary/10' : 'border-gray-300'"
     @dragover.prevent="handleDragOver"
     @dragleave="handleDragLeave"
     @drop="handleDrop"
@@ -80,7 +80,7 @@
             </div>
 
             <button
-              class="text-xs px-2 py-1 bg-red-500 text-white rounded"
+              class="text-xs px-2 py-1 bg-primary hover:bg-primary-dark text-white rounded transition-colors"
               @click="$emit('remove', item)"
             >
               제거
@@ -196,7 +196,7 @@ const emit = defineEmits(['drop', 'remove'])
 <style scoped>
 .drop-active {
   @apply bg-primary/10 border-primary scale-105;
-  box-shadow: 0 20px 40px rgba(15, 73, 189, 0.2);
+  box-shadow: 0 20px 40px rgba(236, 72, 153, 0.25);
 }
 
 .drag-enter {

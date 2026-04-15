@@ -12,9 +12,15 @@
         theme: {
           extend: {
             colors: {
-              "primary": "#0f49bd",
-              "background-light": "#f6f6f8",
-              "background-dark": "#101622",
+              // Black + Purple tone
+              "primary": "#000000",
+              "primary-dark": "#111111",
+              "secondary": "#8b5cf6",      // violet-500
+              "secondary-dark": "#7c3aed", // violet-600
+
+              // Backgrounds (always white)
+              "background-light": "#ffffff",
+              "background-dark": "#ffffff"
             },
             fontFamily: {
               "display": ["Manrope"]
@@ -46,7 +52,7 @@
         }
     </style>
   </head>
-  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased font-display">
+  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-900 antialiased font-display">
       <div id="app"></div>
       <script type="module" src="/src/main.js"></script>
 
