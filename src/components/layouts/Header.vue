@@ -143,7 +143,9 @@
           </button>
 
           <!-- Login -->
+          <div>
           <button
+            v-if="userStore.accessToken === null"
             type="button"
             class="flex items-center justify-center gap-2 px-3 py-2 hover:bg-primary/10 rounded-lg transition-colors"
             @click="handleLogin"
@@ -166,11 +168,24 @@
 
             <span class="text-sm text-slate-500">Login</span>
           </button>
-        </div>
+
+          <!-- logout -->
+          <button
+            v-else
+            type="button"
+            class="flex items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg transition-colors"
+            @click="handleLogout"  
+          >
+            <img src="@/assets/icons/icon-profile.png" class="w-6 h-6" />
+            <span class="text-sm text-slate-700">Logout</span>
+          </button>
+          </div>
+          </div>
+
       </div>
     </div>
 
-        <!-- Mobile: dropdown menu (pushes page down) -->
+    <!-- Mobile: dropdown menu (pushes page down) -->
     <transition name="mobile-menu">
       <div v-show="isMobileMenuOpen" class="md:hidden bg-white border-t border-primary/10">
         <div class="px-4 py-4 flex flex-col gap-4">
@@ -227,11 +242,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup ts>
 import { useRouter } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import { useProductStore } from '@/stores/productStore'
+import { useUserStore } from '@/stores/userStore'
 
+const userStore = useUserStore()
 const router = useRouter()
 const searchQuery = ref('')
 
@@ -248,6 +265,11 @@ const favoritesCount = computed(() => {
   return (productStore.products || []).filter((p) => p.isFavorite).length
 })
 
+const isLogin = computed(() => {
+  console.log('userStore.hasAuthenticated:', userStore.hasAuthenticated)
+  return userStore.hasAuthenticated
+})
+
 watch(searchQuery, (newQuery) => {
   // Implement search logic here, e.g., filter products in the store
   console.log('Search query:', newQuery)
@@ -262,8 +284,6 @@ watch(
   }
 )
 
-
-
 const navItems = [{ name: 'Home', path: '/' }]
 
 const isActive = (path) => {
@@ -272,6 +292,10 @@ const isActive = (path) => {
 
 const handleLogin = () => {
   router.push('/login')
+}
+const handleLogout = () => {
+  router.push('/')
+  userStore.logout()
 }
 </script>
 

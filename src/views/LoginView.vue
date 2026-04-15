@@ -145,6 +145,9 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ModalConfirm from '../components/modals/ModalConfirm.vue'
+import { useUserStore } from '../stores/userStore'
+
+const userStore = useUserStore();
 
 const router = useRouter()
 const userId = ref('')
@@ -186,7 +189,7 @@ const handleLogin = async () => {
     captchaInput.value = ''
     return
   }
-  showModal.value = true
+  userStore.login({ userId: userId.value, username: '테스터', rememberMe: rememberMe.value })
 
   // isLoading.value = true
 
