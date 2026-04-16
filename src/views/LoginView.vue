@@ -190,6 +190,7 @@ const handleLogin = async () => {
     return
   }
   userStore.login({ userId: userId.value, username: '테스터', rememberMe: rememberMe.value })
+  router.push('/')
 
   // isLoading.value = true
 
