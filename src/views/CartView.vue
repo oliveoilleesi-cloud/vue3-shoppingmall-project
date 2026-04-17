@@ -33,7 +33,10 @@
 
               <div class="flex-1 ml-4">
                 <p class="text-sm font-semibold">{{ item.product.name }}</p>
-                <p class="text-xs text-gray-400">₩{{ item.product.price }}</p>
+                <p class="text-sm text-gray-400">수량: {{ item.quantity }}</p>
+                <p class="text-sm text-orange-400">{{ item.product.discountRate.toLocaleString() }}%</p>
+                <p class="text-xs font-semibold text-gray-400">₩{{ calculateDiscountedPrice(item.product.price, item.product.discountRate).toLocaleString() }}</p>
+                <p class="text-sm text-slate-400 line-through">₩{{ item.product.price.toLocaleString() }}</p>
               </div>
 
               <button class="text-xs px-2 py-1 bg-white hover:bg-primary/10 text-white rounded "
@@ -52,36 +55,36 @@
 
               <div class="flex items-center justify-between">
                 <p class="text-sm font-semibold">총 주문 금액</p>
-                <p class="text-sm font-semibold">₩ 100,000</p>
+                <p class="text-sm font-semibold">₩ {{ orderTotalPrice.toLocaleString() }}</p>
               </div>
               <div class="flex items-center justify-between">
                 <p class="text-xs text-gray-400">상품금액: </p>
-                <p class="text-xs text-gray-400 ml-1">₩ 100,000</p>
+                <p class="text-xs text-gray-400 ml-1">₩ {{ totalOriginalPrice.toLocaleString() }}</p>
               </div>
               <div class="flex items-center justify-between">
                 <p class="text-xs text-gray-400">배송비: </p>
-                <p class="text-xs text-gray-400 ml-1">₩ 2,500</p>
+                <p class="text-xs text-gray-400 ml-1">₩ {{ deleveryFee.toLocaleString() }}</p>
               </div>
             </div>
-
+            &nbsp;
             <!--총 할인 금액-->
             <div class="flex-1 flex-direction: row; ml-4">
               <div class="flex items-center justify-between">
                 <p class="text-sm font-semibold">총 할인 금액</p>
-                <p class="text-sm font-semibold text-orange-500">- ₩ 2,500</p>
+                <p class="text-sm font-semibold text-orange-500">- ₩ {{ totalDiscountAmount.toLocaleString() }}</p>
               </div>
               <div class="flex items-center justify-between">
                 <p class="text-xs text-gray-400">기본 할인: </p>
-                <p class="text-xs text-gray-400 ml-1">- ₩ 2,500</p>
+                <p class="text-xs text-gray-400 ml-1">- ₩ {{ totalDiscountAmount.toLocaleString() }}</p>
               </div>
             </div>
-
+            &nbsp;
             <!--총 금액-->
             <div class="flex-1 flex-direction: row; ml-4">
 
               <div class="flex items-center justify-between">
                 <p class="text-sm font-semibold">총 금액</p>
-                <p class="text-sm font-semibold">₩ 97,500</p>
+                <p class="text-sm font-semibold">₩ {{ totalPrice.toLocaleString() }}</p>
               </div>
             </div>
 
@@ -97,25 +100,37 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import ProductCard from '@/components/ProductCard.vue'
-import { useProductStore } from '@/stores/productStore'
 import { useCartStore } from '@/stores/cartStore'
+import { calculateDiscountedPrice } from '@/utils/caculate'
 
 const router = useRouter()
-const productStore = useProductStore()
 const cartStore = useCartStore()
 
-const favoriteProducts = computed(() => {
-  return (cartStore.cartItems || []).filter(p => p.isFavorite)
+const orderTotalPrice = computed(() => {
+  return totalOriginalPrice.value + deleveryFee.value
 })
 
-const handleProductClick = (product) => {
-  router.push(`/product/${product.id}`)
-}
+const totalPrice = computed(() => {
+  return cartStore.cartItems.reduce((total, item) => {
+    const discountedPrice = calculateDiscountedPrice(item.product.price, item.product.discountRate)
+    return total + (discountedPrice * item.quantity)
+  }, 0) + deleveryFee.value
+})
 
-const toggleFavorite = (product) => {
-  const found = productStore.products.find(p => p.id === product.id)
-  if (!found) return
-  found.isFavorite = !found.isFavorite
-}
+const totalOriginalPrice = computed(() => {
+  return cartStore.cartItems.reduce((total, item) => {
+    return total + (item.product.price * item.quantity)
+  }, 0)
+})
+
+const deleveryFee = computed(() => {
+  return cartStore.cartItems.length > 0 ? 2500 : 0
+})
+const totalDiscountAmount = computed(() => {
+  return cartStore.cartItems.reduce((total, item) => {
+    var discountAmount = (item.product.price * (item.product.discountRate/100)).toFixed(2)
+    return total + (discountAmount * item.quantity)
+  }, 0)
+})
+
 </script>

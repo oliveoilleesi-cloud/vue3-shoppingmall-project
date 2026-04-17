@@ -62,9 +62,9 @@
           <span class="material-symbols-outlined text-[16px] text-primary fill-1">star</span>
           <span class="text-xs font-medium text-slate-500">{{ product.rating }} ({{ product.reviews }} reviews)</span>
           <span class="text-sm font-bold text-orange-500">{{ product?.discountRate }}% 할인</span>
-        </div>s
-        <p class="text-base font-bold text-primary">${{ discountedPrice.toFixed(2) }}</p>
-        <p  class="text-sm text-slate-400 line-through">
+        </div>
+        <p class="text-base font-bold text-primary">${{ discountedPrice }}</p>
+        <p class="text-sm text-slate-400 line-through">
           ${{ product.price.toLocaleString() }}
         </p>
       </div>

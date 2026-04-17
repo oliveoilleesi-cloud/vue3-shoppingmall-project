@@ -6,5 +6,5 @@ export const calculateDiscountedPrice = (price, discountRate) => {
   if (!rate) return null
 
   // reverse-calc original price
-  return Math.round(price - (price * (rate / 100)))
+  return Math.round(price - (price * (rate / 100))).toFixed(2)
 }   
