@@ -61,14 +61,20 @@
         <div class="flex items-center gap-1 mb-1">
           <span class="material-symbols-outlined text-[16px] text-primary fill-1">star</span>
           <span class="text-xs font-medium text-slate-500">{{ product.rating }} ({{ product.reviews }} reviews)</span>
-        </div>
-        <p class="text-base font-bold text-primary">${{ product.price.toFixed(2) }}</p>
+          <span class="text-sm font-bold text-orange-500">{{ product?.discountRate }}% 할인</span>
+        </div>s
+        <p class="text-base font-bold text-primary">${{ discountedPrice.toFixed(2) }}</p>
+        <p  class="text-sm text-slate-400 line-through">
+          ${{ product.price.toLocaleString() }}
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { calculateDiscountedPrice } from '../utils/caculate'
 
 const props = defineProps({
   product: {
@@ -87,6 +93,11 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['clickFavorite'])
+
+const discountedPrice = computed(() => {
+  if (!props.product.discountRate) return props.product.price
+  return calculateDiscountedPrice(props.product.price, props.product.discountRate)
+})
 
 const toggleFavorite = () => {
   // favorite 상태 변경은 상위(ShopView)에서 store 기준으로 처리

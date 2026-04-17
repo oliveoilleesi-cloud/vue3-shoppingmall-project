@@ -99,12 +99,12 @@
           <div class="mb-6">
             <div class="flex items-center justify-between mb-2">
               <p class="text-sm text-slate-500">가격</p>
-              <span class="text-sm font-bold text-orange-500">{{ discountRate }}% 할인</span>
+              <span class="text-sm font-bold text-orange-500">{{ productStore.product?.discountRate }}% 할인</span>
             </div>
             <div class="flex items-end gap-3">
-              <p class="text-3xl font-bold text-primary">${{ priceValue.toLocaleString() }}</p>
-              <p v-if="originalPrice" class="text-sm text-slate-400 line-through">
-                ${{ originalPrice.toLocaleString() }}
+              <p v-if="originalPrice" class="text-3xl font-bold text-primary">${{ originalPrice.toLocaleString() }}</p>
+              <p class="text-sm text-slate-400 line-through">
+                ${{ productStore.product?.price?.toLocaleString() }}
               </p>
             </div>
           </div>
@@ -204,6 +204,7 @@ import { useRoute } from 'vue-router'
 import Modal from '../components/modals/Modal.vue'
 import { useProductStore } from '../stores/productStore'
 import { useCartStore } from '../stores/cartStore'
+import { calculateDiscountedPrice } from '../utils/caculate'
 
 const route = useRoute()
 const productStore = useProductStore()
@@ -219,15 +220,6 @@ const priceValue = computed(() => {
   return Number(productStore.product?.price) || 0
 })
 
-const discountRate = computed(() => {
-  const rate = productStore.product?.discountRate
-  if (typeof rate === 'number') return rate
-
-  // fallback mock discount
-  const id = Number(productStore.product?.id) || 0
-  const table = [10, 15, 20, 25]
-  return table[id % table.length]
-})
 
 const originalPrice = computed(() => {
   const price = priceValue.value
@@ -236,11 +228,11 @@ const originalPrice = computed(() => {
   const original = productStore.product?.originalPrice
   if (typeof original === 'number' && original > price) return original
 
-  const rate = discountRate.value
+  const rate = productStore.product?.discountRate
   if (!rate) return null
 
   // reverse-calc original price
-  return Math.round((price / (1 - rate / 100)) * 100) / 100
+  return calculateDiscountedPrice(price, rate)
 })
 
 
