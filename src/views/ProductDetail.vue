@@ -203,9 +203,11 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Modal from '../components/modals/Modal.vue'
 import { useProductStore } from '../stores/productStore'
+import { useCartStore } from '../stores/cartStore'
 
 const route = useRoute()
 const productStore = useProductStore()
+const cartStore = useCartStore()
 
 const isFavorite = ref(false)
 const toggleFavorite = () => {
@@ -356,7 +358,9 @@ const addToCart = () => {
     selectedPrice: selectedPrice.value,
     quantity: quantity.value
   }
+  cartStore.addToCart(cartItem)
   console.log('장바구니 추가:', cartItem)
+  
   alert(`${productStore.product.name}을(를) 장바구니에 담았습니다!`)
 }
 

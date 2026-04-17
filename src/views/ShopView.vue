@@ -228,4 +228,5 @@ const toggleFavorite = (product) => {
     productStore.product.isFavorite = found.isFavorite
   }
 }
+
 </script>

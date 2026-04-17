@@ -12,10 +12,10 @@
           class="p-2 rounded-lg hover:bg-primary/10 transition-colors"
           @click="toggleMobileMenu"
         >
-          <span class="material-symbols-outlined text-slate-900">menu</span>
+          <img src="@/assets/icons/icon-menu.png" class="w-6 h-6" />
         </button>
 
-        <div class="flex items-center gap-2 text-primary select-none">
+        <div class="flex items-center gap-2 text-primary select-none" @click="router.push('/')"  >
           <span class="material-symbols-outlined text-3xl">App</span>
           <h2 class="text-xl font-extrabold tracking-tighter">MALL</h2>
         </div>
@@ -25,8 +25,7 @@
           <button
             type="button"
             aria-label="favorite"
-            class="relative p-2 rounded-lg hover:bg-primary/10 transition-colors"
-            :class="favoritesCount > 0 ? 'text-orange-500' : 'text-slate-700'"
+            class="relative p-2 text-slate-700 rounded-lg hover:bg-primary/10 transition-colors"
             @click="router.push('/favorite')"
           >
             <svg
@@ -35,7 +34,7 @@
               class="w-6 h-6"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
+              stroke-width="1.5"
               stroke-linecap="round"
               stroke-linejoin="round"
             >
@@ -49,6 +48,25 @@
             >
               {{ favoritesCount }}
             </span>
+          </button>
+          <!-- Cart (icon only on mobile) -->
+          <button
+            type="button"
+            aria-label="cart"
+            class="flex text-slate-700 items-center justify-center gap-2 px-3 py-2 hover:bg-primary/10 rounded-lg transition-colors"
+            @click="router.push('/cart')"
+          >
+            <!-- 아이콘 + 뱃지 wrapper -->
+            <div class="relative">
+              <img src="@/assets/icons/icon-shopping-cart.png" class="w-6 h-6" />
+
+              <span
+                v-if="cartsCount"
+                class="absolute -top-3 -right-3 inline-flex items-center justify-center min-w-5 h-5 px-1 rounded-full bg-orange-500 text-white text-[11px] font-bold"
+              >
+                {{ cartsCount }}
+              </span>
+            </div>
           </button>
 
           <!-- Login (icon only on mobile) -->
@@ -114,8 +132,7 @@
           <button
             type="button"
             aria-label="favorite"
-            class="flex items-center justify-center gap-2 px-3 py-2 hover:bg-primary/10 rounded-lg transition-colors"
-            :class="favoritesCount > 0 ? 'text-orange-500' : 'text-slate-700'"
+            class="flex items-center text-slate-700 justify-center gap-2 px-3 py-2 hover:bg-primary/10 rounded-lg transition-colors"
             @click="router.push('/favorite')"
           >
             <svg
@@ -141,44 +158,62 @@
               {{ favoritesCount }}
             </span>
           </button>
+          <!-- Cart -->
+          <button
+            type="button"
+            aria-label="cart"
+            class="flex items-center justify-center gap-2 px-3 py-2 hover:bg-primary/10 rounded-lg transition-colors"
+            :class="cartsCount > 0 ? 'text-orange-500' : 'text-slate-700'"
+            @click="router.push('/cart')"
+          >
+            <img src="@/assets/icons/icon-shopping-cart.png" class="w-6 h-6" />
+
+            <span class="text-sm text-slate-500">Cart</span>
+            <span
+              v-if="cartsCount"
+              class="ml-1 inline-flex items-center justify-center min-w-5 h-5 px-1 rounded-full bg-orange-500 text-white text-[11px] font-bold"
+            >
+              {{ cartsCount }}
+            </span>
+          </button>
 
           <!-- Login -->
           <div>
-          <button
-            v-if="userStore.accessToken === null"
-            type="button"
-            class="flex items-center justify-center gap-2 px-3 py-2 hover:bg-primary/10 rounded-lg transition-colors"
-            @click="handleLogin"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="w-6 h-6 text-slate-900"
-              aria-hidden="true"
+            <button
+              v-if="userStore.accessToken === null"
+              type="button"
+              class="flex items-center justify-center gap-2 px-3 py-2 hover:bg-primary/10 rounded-lg transition-colors"
+              @click="handleLogin"
             >
-              <path d="M14 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-2" />
-              <path d="M9 12h12" />
-              <path d="M16 8l5 4-5 4" />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-6 h-6 text-slate-900"
+                aria-hidden="true"
+              >
+                <path d="M14 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-2" />
+                <path d="M9 12h12" />
+                <path d="M16 8l5 4-5 4" />
+              </svg>
 
-            <span class="text-sm text-slate-500">Login</span>
-          </button>
+              <span class="text-sm text-slate-500">Login</span>
+            </button>
 
-          <!-- logout -->
-          <button
-            v-else
-            type="button"
-            class="flex items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg transition-colors"
-            @click="handleLogout"  
-          >
-            <img src="@/assets/icons/icon-profile.png" class="w-6 h-6" />
-            <span class="text-sm text-slate-700">Logout</span>
-          </button>
+            <!-- logout -->
+            <button
+              v-else
+              type="button"
+              class="flex items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg transition-colors"
+              @click="handleLogout"  
+            >
+              <img src="@/assets/icons/icon-profile.png" class="w-6 h-6" />
+              <span class="text-sm text-slate-700">Logout</span>
+            </button>
           </div>
           </div>
 
@@ -210,32 +245,6 @@
               type="text"
             />
           </div>
-
-          <div class="flex flex-col gap-2">
-            <button
-              type="button"
-              class="flex items-center justify-between gap-2 px-3 py-2 hover:bg-primary/10 rounded-lg transition-colors"
-              :class="favoritesCount > 0 ? 'text-orange-500' : 'text-slate-700'"
-              @click="router.push('/favorite'); closeMobileMenu()"
-            >
-              <span class="text-sm font-semibold">My favorites</span>
-              <span
-                v-if="favoritesCount"
-                class="inline-flex items-center justify-center min-w-6 h-6 px-2 rounded-full bg-orange-500 text-white text-[11px] font-bold"
-              >
-                {{ favoritesCount }}
-              </span>
-            </button>
-
-            <button
-              type="button"
-              class="flex items-center justify-between gap-2 px-3 py-2 hover:bg-primary/10 rounded-lg transition-colors text-slate-700"
-              @click="handleLogin(); closeMobileMenu()"
-            >
-              <span class="text-sm font-semibold">Login</span>
-              <span class="material-symbols-outlined text-slate-900">login</span>
-            </button>
-          </div>
         </div>
       </div>
     </transition>
@@ -246,9 +255,11 @@
 import { useRouter } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import { useProductStore } from '@/stores/productStore'
+import { useCartStore } from '@/stores/cartStore' 
 import { useUserStore } from '@/stores/userStore'
 
 const userStore = useUserStore()
+const cartStore = useCartStore()
 const router = useRouter()
 const searchQuery = ref('')
 
@@ -263,6 +274,9 @@ const closeMobileMenu = () => {
 const productStore = useProductStore()
 const favoritesCount = computed(() => {
   return (productStore.products || []).filter((p) => p.isFavorite).length
+})
+const cartsCount = computed(() => {
+  return (cartStore.cartItems || []).length
 })
 
 const isLogin = computed(() => {

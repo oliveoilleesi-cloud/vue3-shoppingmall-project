@@ -16,7 +16,7 @@
                 v-for="item in socialIcons"
                 :key="item.type"
                 type="button"
-                class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all"
+                class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary/10 hover:text-white transition-all"
                 :aria-label="item.label"
                 @click="handleSocialClick(item)"
               >

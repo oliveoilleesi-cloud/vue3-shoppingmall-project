@@ -24,7 +24,7 @@
         </div>
 
         <button
-          class="px-2 py-1 text-sm bg-primary hover:bg-primary-dark text-white rounded transition-colors"
+          class="px-2 py-1 text-sm bg-primary hover:bg-gray-200 text-white rounded transition-colors"
           @click="remove(item)"
         >
           제거

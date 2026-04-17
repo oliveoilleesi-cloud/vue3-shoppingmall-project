@@ -48,6 +48,12 @@ const routes = [
     name: 'Favorite',
     component: FavoriteView,
     meta: { requiresAuth: false, isFullApp: false }
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => import('../views/CartView.vue'), // Lazy load the cart view
+    meta: { requiresAuth: false, isFullApp: false } // 장바구니 페이지는 인증이 필요하지 않음
   }
 ]
 
