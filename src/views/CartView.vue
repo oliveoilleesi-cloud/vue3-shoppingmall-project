@@ -1,13 +1,11 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-
       <div class="flex items-center gap-3">
         <div>
           <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">🛒 Cart</h1>
           <p class="text-sm text-slate-500">내가 담은 상품을 모아봤어요</p>
         </div>
       </div>
-    </div>    
     <div v-if="cartStore.cartItems.length === 0" class="bg-white rounded-2xl border border-slate-200 p-10 text-center">
       <p class="text-slate-600">아직 담은 상품이 없어요.</p>
       <button type="button"
@@ -17,8 +15,6 @@
         쇼핑하러 가기
       </button>
     </div>
-
-    <div v-else class="mt-4 bg-white rounded-2xl shadow-lg p-4">
       <span class="text-sm text-gray-500">총 {{ cartStore.cartItems.length }}개</span>
       <div class="flex flex-row mt-4">
         <div class="flex-1 space-y-2">
@@ -91,10 +87,8 @@
           </div>
         </div>
         <!-- 총 금액 영역 end-->
-
-      </div>
-
   </div>
+  </div>  
 </template>
 
 <script setup>
