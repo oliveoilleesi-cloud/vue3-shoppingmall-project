@@ -27,8 +27,7 @@
         :key="product.id"
         :product="product"
         :onClick="handleProductClick"
-        @clickFavorite="toggleFavorite"
-      />
+q      />
     </div>
   </div>
 </template>

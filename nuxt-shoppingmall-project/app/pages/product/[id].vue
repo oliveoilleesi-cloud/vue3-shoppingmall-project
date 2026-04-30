@@ -190,6 +190,12 @@
             >
               <span class="material-symbols-outlined">주문하기</span>
             </button>
+            <button
+              @click="payment"
+              class="flex-1 py-3 px-4 bg-primary hover:bg-primary-dark text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+            >
+              <span class="material-symbols-outlined">결제창OPEN</span>
+            </button>
           </div>
         </div>
       </div>
@@ -201,10 +207,10 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import Modal from '../components/modals/Modal.vue'
-import { useProductStore } from '../stores/productStore'
-import { useCartStore } from '../stores/cartStore'
-import { calculateDiscountedPrice } from '../utils/caculate'
+import Modal from '@/components/modals/Modal.vue'
+import { useProductStore } from '@/stores/productStore'
+import { useCartStore } from '@/stores/cartStore'
+import { calculateDiscountedPrice } from '@/utils/caculate'
 
 const route = useRoute()
 const productStore = useProductStore()
@@ -371,6 +377,26 @@ const placeOrder = () => {
 const handleModalClose =() => {
   showModal.value = false   
 }
+
+      const payment = () => {
+        window.payVerse.requestUI({
+            mid: 'Payverse',
+            sign: '290a8492a5e9db5d43b869d7b4a9058231510c0a48030052becf22232b4cde70d543b89a9ff93511d10ea2f74a09fd9ba73b907e41374216755f37806f0e645b',
+            clientKey: '0123456789123456',
+            orderId: '5fbwtzv9t9',
+            customerId: 'Payverse',
+            productName: '페이버스 티셔츠',
+            requestCurrency: 'KRW',
+            requestAmount: '100',
+            reqDate: '20241219000000',
+            returnUrl: 'https://test.payverseglobal.com/return',
+            webhookUrl: 'https://test.payverseglobal.com/webhook',
+            billkeyReq: 'N',
+            mallReserved: '',
+          },
+          (payverseResult) => console.log(payverseResult)
+        );
+      }
 </script>
 
 <style scoped>
